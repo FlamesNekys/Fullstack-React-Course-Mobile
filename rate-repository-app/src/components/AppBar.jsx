@@ -6,8 +6,8 @@ import Navigation from './Navigation';
 const styles = StyleSheet.create({
     container: {
         paddingTop: Constants.statusBarHeight,
-        paddingBottom: 20,
-        paddingLeft: 20,
+        paddingBottom: 10,
+        paddingLeft: 10,
         backgroundColor: theme.colors.appBar,
     },
 });

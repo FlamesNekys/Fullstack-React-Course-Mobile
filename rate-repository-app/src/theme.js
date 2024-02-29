@@ -3,16 +3,19 @@ const theme = {
         textPrimary: '#F8F8F2',
         textSecondary: '#ADB2B8',
         primary: '#0366d6',
-        appBar: '#160A24',
+        appBar: '#38172B',
         main: '#16070E',
         separator: '#21161A',
+        error: '#FF090C',
     },
     fontSizes: {
         body: 16,
         subheading: 18,
     },
     fonts: {
-        main: 'System',
+        default: 'System',
+        ios: 'Arial',
+        android: 'Roboto',
     },
     fontWeights: {
         normal: '400',

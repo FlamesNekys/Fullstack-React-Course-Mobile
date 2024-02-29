@@ -33,10 +33,10 @@ const RepositoryItem = ({ item }) => {
             <View style={styles.mainContainer}>
                 <Image style={styles.image} src={item.ownerAvatarUrl} />
                 <View style={styles.textContainer}>
-                    <Text paddingBottom="pad" fontWeight="bold" color="textPrimary" fontSize="subheading">
+                    <Text paddingBottom fontWeight="bold" color="textPrimary" fontSize="subheading">
                         {item.fullName}
                     </Text>
-                    <Text paddingBottom="pad" color="textSecondary">
+                    <Text paddingBottom color="textSecondary">
                         {item.description}
                     </Text>
                     <View style={styles.languageContainer}>
