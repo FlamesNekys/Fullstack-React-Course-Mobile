@@ -1,7 +1,7 @@
 import { View, Image, StyleSheet } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
-import RepositoryStatistic from './RepositoryStatistic';
+import RepositoryStatistic from './RepositoryList/RepositoryStatistic';
 
 const styles = StyleSheet.create({
     image: {
@@ -11,32 +11,32 @@ const styles = StyleSheet.create({
     },
     mainContainer: {
         padding: 20,
-        flex: 1,
         flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     textContainer: {
         flex: 1,
-        paddingLeft: 20,
+        paddingLeft: 30,
         paddingTop: 5,
     },
     languageContainer: {
         backgroundColor: theme.colors.primary,
         borderRadius: 5,
         alignSelf: 'flex-start',
-        padding: 5,
+        padding: 6.5,
     },
 });
 
 const RepositoryItem = ({ item }) => {
     return (
-        <View>
+        <View testID="repositoryItem">
             <View style={styles.mainContainer}>
                 <Image style={styles.image} src={item.ownerAvatarUrl} />
                 <View style={styles.textContainer}>
-                    <Text paddingBottom fontWeight="bold" color="textPrimary" fontSize="subheading">
+                    <Text paddingBottom="s" fontWeight="bold" color="textPrimary" fontSize="subheading">
                         {item.fullName}
                     </Text>
-                    <Text paddingBottom color="textSecondary">
+                    <Text paddingBottom="body" color="textSecondary">
                         {item.description}
                     </Text>
                     <View style={styles.languageContainer}>

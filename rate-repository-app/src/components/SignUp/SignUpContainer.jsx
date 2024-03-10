@@ -1,15 +1,8 @@
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
-import Text from './Text';
+import Text from '../Text';
 import { useFormik } from 'formik';
-import theme from '../theme';
+import theme from '../../theme';
 import * as yup from 'yup';
-import useSignIn from '../hooks/useSignIn';
-import { useNavigate } from 'react-router-native';
-
-const initialValues = {
-    username: '',
-    password: '',
-};
 
 const styles = StyleSheet.create({
     container: {
@@ -37,7 +30,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 25,
         marginVertical: 20,
         borderRadius: 5,
-        paddingVertical: 20,
+        paddingVertical: 19,
+        alignItems: 'center',
     },
     errorInputContainer: {
         borderWidth: 2,
@@ -51,27 +45,22 @@ const styles = StyleSheet.create({
     },
 });
 
+const initialValues = {
+    username: '',
+    password: '',
+    passwordConfirm: '',
+};
+
 const validationSchema = yup.object().shape({
     username: yup.string().required('Username is required'),
     password: yup.string().required('Password is required'),
+    passwordConfirm: yup
+        .string()
+        .oneOf([yup.ref('password'), null], `Passwords don't match, please try again`)
+        .required('Password confirm is required'),
 });
 
-const SignIn = () => {
-    const [signIn] = useSignIn();
-    const navigate = useNavigate();
-
-    const onSubmit = async (values) => {
-        const { username, password } = values;
-
-        try {
-            const data = await signIn({ username, password });
-            console.log(data.authenticate.accessToken);
-            navigate('/');
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
+const SignUpContainer = ({ onSubmit }) => {
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -101,15 +90,24 @@ const SignIn = () => {
                 />
                 {formik.errors.password && <Text color="error">{formik.errors.password}</Text>}
             </View>
+            <View style={formik.errors.passwordConfirm ? styles.errorInputContainer : styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirm the password"
+                    placeholderTextColor={theme.colors.textSecondary}
+                    value={formik.values.passwordConfirm}
+                    onChangeText={formik.handleChange('passwordConfirm')}
+                    secureTextEntry
+                />
+                {formik.errors.passwordConfirm && <Text color="error">{formik.errors.passwordConfirm}</Text>}
+            </View>
             <Pressable style={styles.button} onPress={formik.handleSubmit}>
-                <View style={{ alignSelf: 'center' }}>
-                    <Text fontWeight="bold" fontSize="subheader">
-                        Sign in
-                    </Text>
-                </View>
+                <Text fontWeight="bold" fontSize="subheading">
+                    Sign up
+                </Text>
             </Pressable>
         </View>
     );
 };
 
-export default SignIn;
+export default SignUpContainer;

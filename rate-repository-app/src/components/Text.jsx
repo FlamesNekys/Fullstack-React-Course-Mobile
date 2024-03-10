@@ -28,11 +28,17 @@ const styles = StyleSheet.create({
     fontWeightBold: {
         fontWeight: theme.fontWeights.bold,
     },
-    paddingBottom: {
-        paddingBottom: 10,
+    paddingBottomBody: {
+        paddingBottom: 13,
+    },
+    paddingBottomS: {
+        paddingBottom: 7,
     },
     error: {
         color: theme.colors.error,
+    },
+    fontSizeRating: {
+        fontSize: theme.fontSizes.rating,
     },
 });
 
@@ -44,8 +50,10 @@ const Text = ({ color, fontSize, fontWeight, style, paddingBottom, ...props }) =
         color === 'primary' && styles.colorPrimary,
         color === 'error' && styles.error,
         fontSize === 'subheading' && styles.fontSizeSubheading,
+        fontSize === 'rating' && styles.fontSizeRating,
         fontWeight === 'bold' && styles.fontWeightBold,
-        paddingBottom && styles.paddingBottom,
+        paddingBottom === 'body' && styles.paddingBottomBody,
+        paddingBottom === 's' && styles.paddingBottomS,
     ];
 
     return <NativeText style={textStyle} {...props} />;

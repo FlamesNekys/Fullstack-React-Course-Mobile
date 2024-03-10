@@ -1,10 +1,10 @@
 import { View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
-import theme from '../theme';
+import theme from '../../theme';
 import Navigation from './Navigation';
 import { useApolloClient, useQuery } from '@apollo/client';
-import { ME } from '../graphql/queries';
-import useAuthStorage from '../hooks/useAuthStorage';
+import { ME } from '../../graphql/queries';
+import useAuthStorage from '../../hooks/useAuthStorage';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,9 +32,16 @@ const AppBar = () => {
             <ScrollView horizontal>
                 <Navigation text="Repositories" link="/" />
                 {data && data.me ? (
-                    <Navigation text="Sign out" onPress={onSignOut} />
+                    <>
+                        <Navigation text="Create a review" link="/create-review" />
+                        <Navigation text="My reviews" link="/my-reviews" />
+                        <Navigation text="Sign out" onPress={onSignOut} link="/" />
+                    </>
                 ) : (
-                    <Navigation text="Sign in" link="/sign-in" />
+                    <>
+                        <Navigation text="Sign in" link="/sign-in" />
+                        <Navigation text="Sign up" link="/sign-up" />
+                    </>
                 )}
             </ScrollView>
         </View>

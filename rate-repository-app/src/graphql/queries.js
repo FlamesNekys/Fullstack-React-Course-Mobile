@@ -1,37 +1,67 @@
 import { gql } from '@apollo/client';
+import { REPOSITORY_INFO } from './fragments';
 
 export const GET_REPOSITORIES = gql`
-    query {
-        repositories {
+    query orderedRepositories(
+        $orderBy: AllRepositoriesOrderBy
+        $orderDirection: OrderDirection
+        $searchKeyword: String
+    ) {
+        repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
             edges {
                 node {
-                    description
-                    forksCount
-                    fullName
-                    language
-                    ownerAvatarUrl
-                    ratingAverage
-                    reviewCount
-                    stargazersCount
+                    ...RepositoryInfo
+                }
+            }
+        }
+    }
+    ${REPOSITORY_INFO}
+`;
+
+export const ME = gql`
+    query getMe($includeReviews: Boolean = false) {
+        me {
+            id
+            username
+            reviews @include(if: $includeReviews) {
+                edges {
+                    node {
+                        id
+                        repositoryId
+                        text
+                        rating
+                        createdAt
+                        user {
+                            id
+                            username
+                        }
+                    }
                 }
             }
         }
     }
 `;
 
-export const SIGN_IN = gql`
-    mutation signIn($credentials: AuthenticateInput) {
-        authenticate(credentials: $credentials) {
-            accessToken
+export const GET_REPOSITORY = gql`
+    query getRepository($repositoryId: ID!) {
+        repository(id: $repositoryId) {
+            url
+            ...RepositoryInfo
+            reviews {
+                edges {
+                    node {
+                        id
+                        text
+                        rating
+                        createdAt
+                        user {
+                            id
+                            username
+                        }
+                    }
+                }
+            }
         }
     }
-`;
-
-export const ME = gql`
-    query {
-        me {
-            id
-            username
-        }
-    }
+    ${REPOSITORY_INFO}
 `;
