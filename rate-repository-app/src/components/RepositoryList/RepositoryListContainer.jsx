@@ -21,6 +21,8 @@ class RepositoryListContainer extends React.Component {
                     </Pressable>
                 )}
                 keyExtractor={({ id }) => id}
+                onEndReached={this.props.onEndReached}
+                onEndReachedThreshold={0.5}
             />
         );
     }

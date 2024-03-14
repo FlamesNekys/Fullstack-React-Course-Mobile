@@ -9,19 +9,26 @@ import Text from '../Text';
 
 const SingleRepository = () => {
     const { id } = useParams();
-    const { repository, loading } = useRepository(id);
+    const { repository, error, fetchMore } = useRepository({ repositoryId: id, first: 5 });
 
-    if (loading) return <Text>Loading...</Text>;
+    if (error) return <Text>{error.message}</Text>;
 
     const reviews = repository ? repository.reviews.edges.map((edge) => edge.node) : [];
+
+    const onEndReached = () => {
+        fetchMore();
+        console.log('Fetching more reviews...');
+    };
 
     return (
         <FlatList
             data={reviews}
             renderItem={({ item }) => <ReviewItem review={item} />}
             keyExtractor={({ id }) => id}
-            ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
+            ListHeaderComponent={() => repository && <RepositoryInfo repository={repository} />}
             ItemSeparatorComponent={ItemSeparator}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={0.5}
         />
     );
 };

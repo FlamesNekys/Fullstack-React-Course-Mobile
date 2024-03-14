@@ -7,7 +7,7 @@ import { useDebounce } from 'use-debounce';
 
 const RepositoryList = () => {
     const [orderBy, setOrderBy] = useState('CREATED_AT');
-    const [orderDirection, setOrderDirection] = useState('DESC');
+    const [orderDirection, setOrderDirection] = useState();
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedQuery] = useDebounce(searchQuery, 500);
     const navigate = useNavigate();
@@ -15,7 +15,6 @@ const RepositoryList = () => {
     const setOrder = (order) => {
         if (order === 'latest') {
             setOrderBy('CREATED_AT');
-            setOrderDirection('DESC');
         }
         if (order === 'highest') {
             setOrderBy('RATING_AVERAGE');
@@ -27,9 +26,19 @@ const RepositoryList = () => {
         }
     };
 
-    const { repositories, error } = useRepositories(orderBy, orderDirection, debouncedQuery);
+    const { repositories, error, fetchMore } = useRepositories({
+        first: 6,
+        orderBy,
+        orderDirection,
+        searchKeyword: debouncedQuery,
+    });
 
     if (error) return <Text>{error.message}</Text>;
+
+    const onEndReached = () => {
+        fetchMore();
+        console.log('Fetching more repos...');
+    };
 
     return (
         <RepositoryListContainer
@@ -37,6 +46,7 @@ const RepositoryList = () => {
             navigate={navigate}
             setOrder={setOrder}
             repositories={repositories}
+            onEndReached={onEndReached}
         />
     );
 };
